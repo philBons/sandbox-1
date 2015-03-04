@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration>
+
+	<appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{HH:mm:ss} %-5p %c{1} - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- fichier d'erreurs -->
+	<appender name="LOG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/javacodex.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<param name="Threshold" value="WARN" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- fichier des traces Q/R -->
+	<appender name="QR_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/javacodex-qr.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- fichier des traces d'activite -->
+	<appender name="AUDIT_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/javacodex-audit.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- fichier des traces de debug -->
+	<appender name="DEBUG_FILE" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="logs/javacodex-debug.log" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p %c %x - %m%n" />
+		</layout>
+	</appender>
+
+	<!-- configuration des traces : association des traces aux destinations et definition des severites a tracer -->
+	<!-- traces Q/R -->
+	<logger name="qr" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="QR_FILE" />
+	</logger>
+
+	<!-- QR for webservices : turn level in debug if you want to see Q/A
+       WARN: This logging feature consume a lot of resource -->
+	<logger name="qr.http.response.body" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="QR_FILE" />
+	</logger>
+	<logger name="qr.http.request.body" additivity="false">
+		<level value="debug" />
+		<appender-ref ref="QR_FILE" />
+	</logger>
+
+	<!-- traces d'audit d'activite -->
+	<logger name="audit" additivity="false">
+		<level value="info" />
+		<appender-ref ref="AUDIT_FILE" />
+	</logger>
+	
+	<root>
+		<priority value="info" />
+		<appender-ref ref="STDOUT"/>
+		<appender-ref ref="LOG_FILE" />
+		<appender-ref ref="DEBUG_FILE" />
+	</root>
+
+</log4j:configuration>
